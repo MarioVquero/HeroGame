@@ -24,10 +24,12 @@ public class PlayerInputScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
+        characterController.Move(move * playerSpeed * Time.deltaTime);
 
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
         Debug.Log(moveInput);
