@@ -13,45 +13,11 @@ public class PlayerInputScript : MonoBehaviour
 
     public Camera freeLookCam;
     private float currHeight;
-
-
-
-
-    // [SerializeField] private float rotationSpeed = 4f;
-
-    // private CharacterController controller;
-    // private Vector3 playerVelocity;
-    // private bool groundedPlayer;
-
-    // private Transform cameraMainTransform;
-
-    // [Header("Input Actions")]
-    // public InputActionReference moveActionController; // expects Vector2
-    // public InputActionReference flyingController; // expects Button
-
-    private void Awake()
-    {
-        // controller = gameObject.GetComponent<CharacterController>();
-        // cameraMainTransform = Camera.main.transform;
-    }
-
     void Start()
     {
         currHeight = transform.position.y;
         // Cursor.lockState = CursorLockMode.Locked;
     }
-
-    // private void OnEnable()
-    // {
-    //     moveActionController.action.Enable();
-    //     flyingController.action.Enable();
-    // }
-
-    // private void OnDisable()
-    // {
-    //     moveActionController.action.Disable();
-    //     flyingController.action.Disable();
-    // }
 
     void Update()
     {
@@ -69,10 +35,7 @@ public class PlayerInputScript : MonoBehaviour
 
         currHeight = Mathf.Clamp(transform.position.y, currHeight, maxFlightHeight);
         transform.position = new Vector3(transform.position.x, currHeight, transform.position.z);
-
-
     }
-
     private void MoveChar()
     {
         Vector3 cameraForward = new Vector3(freeLookCam.transform.forward.x, 0, freeLookCam.transform.forward.z);
