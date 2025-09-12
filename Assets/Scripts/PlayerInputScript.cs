@@ -5,64 +5,95 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputScript : MonoBehaviour
 {
+    [SerializeField] private float playerSpeed = 5.0f;
+    private float jumpHeight = 1.5f;
 
-    [SerializeField] public float playerSpeed = 5f;
-    [SerializeField] public float JumpHeight = 2f;
-    [SerializeField] public float gravity = -9.5f;
-    [SerializeField] public float roationSpeed = 4f;
+    [SerializeField] private float maxFlightHeight;
+    [SerializeField] private float minFlightHeight;
 
-    [SerializeField] public Transform cameraTransform;
-    // [SerializeField]
-    public InputActionReference movementControl;
+    public Camera freeLookCam;
+    private float currHeight;
 
-    private CharacterController characterController;
-    private Vector3 moveInput;
-    private Vector3 velocity;
-    private Vector2 movement;
 
-    // Start is called before the first frame update
+
+
+    // [SerializeField] private float rotationSpeed = 4f;
+
+    // private CharacterController controller;
+    // private Vector3 playerVelocity;
+    // private bool groundedPlayer;
+
+    // private Transform cameraMainTransform;
+
+    // [Header("Input Actions")]
+    // public InputActionReference moveActionController; // expects Vector2
+    // public InputActionReference flyingController; // expects Button
+
+    private void Awake()
+    {
+        // controller = gameObject.GetComponent<CharacterController>();
+        // cameraMainTransform = Camera.main.transform;
+    }
+
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        currHeight = transform.position.y;
+        // Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
+    // private void OnEnable()
+    // {
+    //     moveActionController.action.Enable();
+    //     flyingController.action.Enable();
+    // }
+
+    // private void OnDisable()
+    // {
+    //     moveActionController.action.Disable();
+    //     flyingController.action.Disable();
+    // }
+
     void Update()
     {
-        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
-        characterController.Move(move * playerSpeed * Time.deltaTime);
-        // movement = movementControl.action.ReadValue<Vector2>();
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-        // if (movement != Vector2.zero)
-        // {
-        //     float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-        //     Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-        //     transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * roationSpeed);
-        // }
-
-    }
-
-    public void Move(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-
-        Debug.Log(moveInput);
-
-        movement = context.ReadValue<Vector2>();
-        if (movement != Vector2.zero)
+        if (Input.GetKey(KeyCode.W))
         {
-            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * roationSpeed);
+            MoveChar();
+        }
+        else
+        {
+            DisableChar();
         }
 
-        
+        currHeight = Mathf.Clamp(transform.position.y, currHeight, maxFlightHeight);
+        transform.position = new Vector3(transform.position.x, currHeight, transform.position.z);
+
+
     }
 
-    // for flight idea
-    // turn off gravity and increase speed by X amount
-    // 
-    
+    private void MoveChar()
+    {
+        Vector3 cameraForward = new Vector3(freeLookCam.transform.forward.x, 0, freeLookCam.transform.forward.z);
+        transform.rotation = Quaternion.LookRotation(cameraForward);
+        transform.Rotate(new Vector3(0, 0, 0), Space.Self);
 
+        Vector3 forward = freeLookCam.transform.forward;
+        Vector3 flyDirection = forward.normalized;
+
+
+        currHeight += flyDirection.y * playerSpeed * Time.deltaTime;
+        currHeight = Mathf.Clamp(currHeight, minFlightHeight, maxFlightHeight);
+
+        transform.position += flyDirection * playerSpeed * Time.deltaTime;
+        transform.position = new Vector3(transform.position.x, currHeight, transform.position.z);
+
+    }
+
+    private void DisableChar()
+    {
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+    }
 
 }

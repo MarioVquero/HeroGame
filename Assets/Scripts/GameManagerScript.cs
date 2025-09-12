@@ -6,6 +6,11 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour
 {
     [SerializeField] public float gameTimer;
+
+
+    // set to true when player leaves
+    public bool hasLeftHQ;
+
     public TMP_Text Timertext;
     // Start is called before the first frame update
     void Start()
@@ -16,7 +21,11 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameTimer += Time.deltaTime;
+        if (hasLeftHQ)
+        {
+            gameTimer += Time.deltaTime;
+
+        }
 
         float seconds = Mathf.FloorToInt(gameTimer % 60);
         Timertext.text = string.Format("Timer: {0:00}", seconds);
