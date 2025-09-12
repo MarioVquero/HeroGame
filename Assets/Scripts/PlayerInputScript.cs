@@ -70,7 +70,10 @@ public class PlayerInputScript : MonoBehaviour
         currHeight = Mathf.Clamp(transform.position.y, currHeight, maxFlightHeight);
         transform.position = new Vector3(transform.position.x, currHeight, transform.position.z);
 
-
+        if (Input.GetKey(KeyCode.F))
+        {
+            SlowTime();
+        }
     }
 
     private void MoveChar()
@@ -96,4 +99,8 @@ public class PlayerInputScript : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
+    private void SlowTime()
+    {
+        Time.timeScale = 0.2f;
+    }
 }
