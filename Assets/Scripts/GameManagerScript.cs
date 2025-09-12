@@ -22,9 +22,9 @@ public class GameManagerScript : MonoBehaviour
         {
             gameTimer += Time.deltaTime;
 
+            float minutes = Mathf.FloorToInt(gameTimer / 60);
             float seconds = Mathf.FloorToInt(gameTimer % 60);
-            Timertext.text = string.Format("Timer: {0:00}", seconds);
-
+            Timertext.text = string.Format("Timer: {0:00}:{1:00}", minutes, seconds);
         }
     }
 }
