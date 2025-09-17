@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class StateManager<Estate> : MonoBehaviour where Estate : Enum
 {

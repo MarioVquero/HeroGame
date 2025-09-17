@@ -6,52 +6,25 @@ using UnityEngine.InputSystem;
 public class PlayerInputScript : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5.0f;
-    private float jumpHeight = 1.5f;
+    
 
     [SerializeField] private float maxFlightHeight;
     [SerializeField] private float minFlightHeight;
+    [SerializeField] private Vector3 attackOffset;
+    [SerializeField] public PlayerAttackScript PAScript;
 
     public Camera freeLookCam;
     private float currHeight;
 
-
-
-
-    // [SerializeField] private float rotationSpeed = 4f;
-
-    // private CharacterController controller;
-    // private Vector3 playerVelocity;
-    // private bool groundedPlayer;
-
-    // private Transform cameraMainTransform;
-
-    // [Header("Input Actions")]
-    // public InputActionReference moveActionController; // expects Vector2
-    // public InputActionReference flyingController; // expects Button
-
     private void Awake()
     {
-        // controller = gameObject.GetComponent<CharacterController>();
-        // cameraMainTransform = Camera.main.transform;
+
     }
 
     void Start()
     {
         currHeight = transform.position.y;
-        // Cursor.lockState = CursorLockMode.Locked;
     }
-
-    // private void OnEnable()
-    // {
-    //     moveActionController.action.Enable();
-    //     flyingController.action.Enable();
-    // }
-
-    // private void OnDisable()
-    // {
-    //     moveActionController.action.Disable();
-    //     flyingController.action.Disable();
-    // }
 
     void Update()
     {
@@ -74,6 +47,16 @@ public class PlayerInputScript : MonoBehaviour
         {
             SlowTime();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log(PAScript.Attack());
+            Debug.Log(transform.position);
+            transform.position = (PAScript.Attack() + attackOffset);
+            Debug.Log(PAScript.Attack());
+            Debug.Log(transform.position);
+        }
+
     }
 
     private void MoveChar()

@@ -11,7 +11,7 @@ public abstract class BaseState<Estate> where Estate : Enum
         StateKey = key;
     }
 
-    public Estate StateKey{ get; private set; }
+    public Estate StateKey { get; private set; }
 
     public abstract void EnterState();
     public abstract void ExitState();
@@ -20,5 +20,6 @@ public abstract class BaseState<Estate> where Estate : Enum
 
     public abstract float CurrentState();
 
+    
 
 }
