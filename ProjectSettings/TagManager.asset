@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - floor
+  - enemy
+  - civilian
+  - AOE
+  - Building
+  - GM
   layers:
   - Default
   - TransparentFX

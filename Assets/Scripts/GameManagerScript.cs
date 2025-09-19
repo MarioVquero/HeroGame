@@ -7,6 +7,8 @@ public class GameManagerScript : MonoBehaviour
 {
     [SerializeField] public GameObject timerStartPoint; //Trigger to start timer
 
+    public int score = 100;
+
     [SerializeField] public float gameTimer;
     public TMP_Text Timertext;
     // Start is called before the first frame update
