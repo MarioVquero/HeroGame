@@ -121,5 +121,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemy: 1
-  score: 0
+  score: 2
   GMscript: {fileID: 0}

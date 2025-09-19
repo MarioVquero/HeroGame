@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {   
-            if (gamePaused)
+            if (gamePaused == true)
             {
                 Resume();
             }
@@ -38,14 +38,18 @@ public class UIManager : MonoBehaviour
         PlayerUI.SetActive(true);
         Time.timeScale = 1.0f;
         gamePaused = false;
+        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Pause()
+    public void Pause()
     {
         PauseMenu.SetActive(true);
         PlayerUI.SetActive(false);
         Time.timeScale = 0f;
         gamePaused = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     public void ChangeSceneByName(string name)

@@ -9,4 +9,10 @@ public class SceneManagerScript : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+
+    public void resetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }

@@ -28,7 +28,7 @@ public class NPCScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("AOE"))
         {
-            if (!isEnemy)
+            if (isEnemy == true)
             {
                 GMscript.score += score;
                 Destroy(gameObject);
