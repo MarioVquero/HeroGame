@@ -25,7 +25,11 @@ public class PlayerInputScript : MonoBehaviour
     private PlayerAttackScript PAScript;
     public Transform pos;
     public Camera freeLookCam;
-    
+
+
+    [SerializeField] Transform aimPos;
+    [SerializeField] LayerMask aimMask;
+    [SerializeField] float aimSmoothSpeed = 20f;
 
     void Start()
     {
@@ -50,8 +54,13 @@ public class PlayerInputScript : MonoBehaviour
             MoveChar();
             PAScript.AttackSquare.SetActive(false);
 
-            
 
+
+        }
+
+        if (loseSpeed == true)
+        {
+            ShowAttack();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -66,7 +75,7 @@ public class PlayerInputScript : MonoBehaviour
 
     public void rotateCharacter()
     {
-        
+
         Vector3 cameraForward = new Vector3(freeLookCam.transform.forward.x, 0, freeLookCam.transform.forward.z);
         transform.rotation = Quaternion.LookRotation(cameraForward);
         transform.Rotate(new Vector3(0, 0, 0), Space.Self);
@@ -97,16 +106,11 @@ public class PlayerInputScript : MonoBehaviour
 
     public void DisableChar()
     {
-        
+
         // Debug.Log(loseSpeed);
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
-    // IEnumerator waitBefore()
-    // {
-    //     loseSpeed = true;
-    //     yield return new WaitForSeconds(1f);
-    // }
 
     void OnTriggerEnter(Collider other)
     {
@@ -115,4 +119,26 @@ public class PlayerInputScript : MonoBehaviour
         //     loseSpeed = true;
         // }
     }
+
+    public void ShowAttack()
+    {
+        Vector2 screenCentre = new Vector2(Screen.width / 2, Screen.height / 2);
+        Ray ray = Camera.main.ScreenPointToRay(screenCentre);
+
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aimMask))
+        {
+
+            Debug.Log("showAttack");
+
+            aimPos.position = Vector3.Lerp(aimPos.position, hit.point, aimSmoothSpeed * Time.deltaTime);
+        }
+    }
+
+    // at the end of playerAttackscript.Attacking
+    // return a vector 3 aka final hit,
+    
+
+
 }
+
