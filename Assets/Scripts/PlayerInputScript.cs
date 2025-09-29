@@ -12,11 +12,12 @@ public class PlayerInputScript : MonoBehaviour
     public float playerSpeed = 5.0f;
     [SerializeField] private float maxFlightHeight;
     [SerializeField] private float minFlightHeight;
+    private float timer = 0f;
     [SerializeField] private Vector3 attackOffset;
     public Vector3 attackPosition;
     public float currHeight;
     public bool loseSpeed = false;
-
+    private bool boosted = false;
 
     private Vector3 flyDirection;
 
@@ -25,7 +26,7 @@ public class PlayerInputScript : MonoBehaviour
     private PlayerAttackScript PAScript;
     public Transform pos;
     public Camera freeLookCam;
-
+    
 
     [SerializeField] Transform aimPos;
     [SerializeField] LayerMask aimMask;
@@ -40,6 +41,22 @@ public class PlayerInputScript : MonoBehaviour
 
     void Update()
     {
+
+        if (boosted == true)
+        {
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+            if (timer >= 2)
+            {
+
+                Debug.Log("finished boost");
+                boosted = false;
+                timer = 0;
+            }
+        }
+        
+
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -53,9 +70,6 @@ public class PlayerInputScript : MonoBehaviour
         {
             MoveChar();
             PAScript.AttackSquare.SetActive(false);
-
-
-
         }
 
         if (loseSpeed == true)
@@ -99,6 +113,10 @@ public class PlayerInputScript : MonoBehaviour
         {
             playerSpeed = 20.0f;
         }
+        if (boosted == true)
+        {
+            playerSpeed = playerSpeed * 1.5f;
+        }
         transform.position += flyDirection * playerSpeed * Time.deltaTime;
         transform.position = new Vector3(transform.position.x, currHeight, transform.position.z);
 
@@ -114,10 +132,10 @@ public class PlayerInputScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // if (other.gameObject.CompareTag("Building"))
-        // {
-        //     loseSpeed = true;
-        // }
+        if (other.gameObject.CompareTag("Booster"))
+        {
+            boosted = true;
+        }
     }
 
     public void ShowAttack()
@@ -129,7 +147,7 @@ public class PlayerInputScript : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aimMask))
         {
 
-            Debug.Log("showAttack");
+            // Debug.Log("showAttack");
 
             aimPos.position = Vector3.Lerp(aimPos.position, hit.point, aimSmoothSpeed * Time.deltaTime);
         }

@@ -10,6 +10,7 @@ TagManager:
   - AOE
   - Building
   - GM
+  - Booster
   layers:
   - Default
   - TransparentFX
